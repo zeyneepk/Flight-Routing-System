@@ -5,6 +5,7 @@ import com.example.flight_routing_system.repository.LocationRepository;
 import com.example.flight_routing_system.service.impl.LocationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -28,13 +29,17 @@ class LocationServiceImplTest {
     void testGetAll() {
         Location loc1 = new Location(1L, "Airport A", "TR", "Istanbul", "AAA");
         Location loc2 = new Location(2L, "Airport B", "TR", "Ankara", "BBB");
-        when(locationRepository.findAll()).thenReturn(Arrays.asList(loc1, loc2));
+
+        List<Location> mockList = List.of(loc1, loc2);
+
+        // Alfabetik sıralama
+        when(locationRepository.findAll(Sort.by("name").ascending())).thenReturn(mockList);
 
         List<Location> result = locationService.getAll();
 
         assertEquals(2, result.size());
-        verify(locationRepository, times(1)).findAll();
     }
+
 
     @Test
     void testGetById_Found() {

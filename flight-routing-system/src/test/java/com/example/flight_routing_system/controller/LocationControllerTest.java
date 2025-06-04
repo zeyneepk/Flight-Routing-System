@@ -52,4 +52,30 @@ public class LocationControllerTest {
                         .content(objectMapper.writeValueAsString(newLoc)))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void testUpdateLocation() throws Exception {
+        Long id = 1L;
+        Location updatedLoc = new Location(id, "Updated Name", "TR", "Istanbul", "AAA");
+
+        Mockito.when(locationService.update(Mockito.eq(id), Mockito.any(Location.class)))
+                .thenReturn(updatedLoc);
+
+        mockMvc.perform(put("/api/locations/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedLoc)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Updated Name"));
+    }
+
+    @Test
+    void testDeleteLocation() throws Exception {
+        Long id = 1L;
+
+        Mockito.doNothing().when(locationService).delete(id);
+
+        mockMvc.perform(delete("/api/locations/{id}", id))
+                .andExpect(status().isOk());
+    }
+
 }

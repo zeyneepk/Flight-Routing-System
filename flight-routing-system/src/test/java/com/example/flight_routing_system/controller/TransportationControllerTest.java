@@ -61,4 +61,49 @@ public class TransportationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.type").value("FLIGHT"));
     }
+
+    @Test
+    void testCreateTransportation() throws Exception {
+        TransportationDTO dto = new TransportationDTO();
+        dto.setOriginId(1L);
+        dto.setDestinationId(2L);
+        dto.setType("BUS");
+
+        Transportation created = new Transportation();
+        created.setId(10L);
+        created.setType(TransportationType.BUS);
+
+        Mockito.when(transportationService.createFromDTO(Mockito.any())).thenReturn(created);
+
+        mockMvc.perform(post("/api/transportations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(10))
+                .andExpect(jsonPath("$.type").value("BUS"));
+    }
+
+    @Test
+    void testDeleteTransportation() throws Exception {
+        Long idToDelete = 5L;
+
+        // service.delete(id) void döndüğü için sadece çağrılıp çağrılmadığını kontrol eder
+        Mockito.doNothing().when(transportationService).delete(idToDelete);
+
+        mockMvc.perform(delete("/api/transportations/" + idToDelete))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testCreateTransportation_withMissingFields_shouldReturnBadRequest() throws Exception {
+        TransportationDTO invalidDto = new TransportationDTO(); // boş DTO
+
+        mockMvc.perform(post("/api/transportations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidDto)))
+                .andExpect(status().isBadRequest());
+    }
+
+
+
 }
