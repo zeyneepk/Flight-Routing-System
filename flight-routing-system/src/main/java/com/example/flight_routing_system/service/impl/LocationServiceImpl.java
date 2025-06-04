@@ -3,6 +3,7 @@ package com.example.flight_routing_system.service.impl;
 import com.example.flight_routing_system.model.Location;
 import com.example.flight_routing_system.repository.LocationRepository;
 import com.example.flight_routing_system.service.LocationService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Location> getAll() {
-        return locationRepository.findAll();
+        return locationRepository.findAll(Sort.by("name").ascending());
+        //return locationRepository.findAll();
     }
 
     @Override

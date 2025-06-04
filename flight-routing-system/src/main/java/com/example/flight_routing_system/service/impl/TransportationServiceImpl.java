@@ -35,13 +35,17 @@ public class TransportationServiceImpl implements TransportationService {
                 .orElseThrow(() -> new RuntimeException("Transportation not found"));
     }
 
-    @Override
-    public Transportation create(Transportation t) {
-        return null;
-    }
+    //@Override
+    //public Transportation create(Transportation t) {
+        //return null;
+    //}
 
     @Override
     public Transportation createFromDTO(TransportationDTO dto) {
+        if (dto.getOriginId() == null || dto.getDestinationId() == null) {
+            throw new IllegalArgumentException("Origin and destination IDs must not be null");
+        }
+
         Location origin = locationRepository.findById(dto.getOriginId())
                 .orElseThrow(() -> new RuntimeException("Origin location not found"));
         Location destination = locationRepository.findById(dto.getDestinationId())
@@ -56,10 +60,11 @@ public class TransportationServiceImpl implements TransportationService {
         return transportationRepository.save(t);
     }
 
-    @Override
-    public Transportation update(Long id, Transportation t) {
-        return null;
-    }
+
+    //@Override
+    //public Transportation update(Long id, Transportation t) {
+    //    return null;
+    //}
 
     @Override
     public Transportation updateFromDTO(Long id, TransportationDTO dto) {

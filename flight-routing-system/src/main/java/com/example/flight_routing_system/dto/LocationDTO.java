@@ -18,6 +18,6 @@ public class LocationDTO {
     private String city;
 
     @NotBlank(message = "Location code is required")
-    @Size(min = 3, max = 3, message = "Location code must be 3 characters")
+    //@Size(min = 3, max = 3, message = "Location code must be 3 characters")
     private String locationCode;
 }

@@ -38,13 +38,15 @@ public class RouteServiceImpl implements RouteService {
         List<Transportation> all = transportationRepository.findAll();
         List<RouteDto> results = new ArrayList<>();
 
-        // tüm 1li, 2li, 3lü kombinasyonları dene
+        // tüm 1li, 2li, 3lü kombinasyonlar
         for (Transportation t1 : all) {
             if (!t1.getOrigin().equals(origin)) continue;
 
-            // 1 aşamalı kontrol
+            // 1 aşamalı rota
             if (t1.getDestination().equals(destination)) {
-                if (isValidRoute(List.of(t1))) results.add(new RouteDto(List.of(t1)));
+                if (isValidRoute(List.of(t1)))  {
+                    results.add(new RouteDto(List.of(t1)));
+                }
             }
 
             for (Transportation t2 : all) {
@@ -52,7 +54,9 @@ public class RouteServiceImpl implements RouteService {
 
                 // 2 aşamalı kontrol
                 if (t2.getDestination().equals(destination)) {
-                    if (isValidRoute(List.of(t1, t2))) results.add(new RouteDto(List.of(t1, t2)));
+                    if (isValidRoute(List.of(t1, t2))) {
+                        results.add(new RouteDto(List.of(t1, t2)));
+                    }
                 }
 
                 for (Transportation t3 : all) {
@@ -81,11 +85,18 @@ public class RouteServiceImpl implements RouteService {
 
         for (Transportation t : route) {
             if (t.getType() == TransportationType.FLIGHT) {
-                if (flightSeen) return false; // birden fazla FLIGHT varsa
+                if (flightSeen){
+                    return false; // birden fazla FLIGHT varsa
+                }
                 flightSeen = true;
-            } else {
-                if (!flightSeen) beforeFlight++;
-                else afterFlight++;
+            }
+            else {
+                if (!flightSeen){
+                    beforeFlight++;
+                }
+                else {
+                    afterFlight++;
+                }
             }
         }
 

@@ -4,6 +4,7 @@ package com.example.flight_routing_system.controller;
 import com.example.flight_routing_system.model.Transportation;
 import com.example.flight_routing_system.service.TransportationService;
 import com.example.flight_routing_system.dto.TransportationDTO;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,12 +31,12 @@ public class TransportationController {
     }
 
     @PostMapping
-    public Transportation create(@RequestBody TransportationDTO dto) {
+    public Transportation create(@Valid @RequestBody TransportationDTO dto) {
         return transportationService.createFromDTO(dto);
     }
 
     @PutMapping("/{id}")
-    public Transportation update(@PathVariable Long id, @RequestBody TransportationDTO dto) {
+    public Transportation update(@PathVariable Long id,@Valid @RequestBody TransportationDTO dto) {
         return transportationService.updateFromDTO(id, dto);
     }
 

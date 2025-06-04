@@ -18,10 +18,7 @@ public class RouteController {
     }
 
     @GetMapping
-    public List<RouteDto> getRoutes(
-            @RequestParam String origin,
-            @RequestParam String destination
-    ) {
+    public List<RouteDto> getRoutes(@RequestParam String origin, @RequestParam String destination) {
         return routeService.findRoutes(origin, destination);
     }
 }

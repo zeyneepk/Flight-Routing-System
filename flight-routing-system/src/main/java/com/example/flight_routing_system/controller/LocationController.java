@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import com.example.flight_routing_system.dto.LocationDTO;
 import jakarta.validation.Valid;
 
-
 import java.util.List;
 
 @RestController
@@ -44,9 +43,17 @@ public class LocationController {
 
 
     @PutMapping("/{id}")
-    public Location update(@PathVariable Long id, @RequestBody Location location) {
+    public Location update(@PathVariable Long id, @Valid @RequestBody LocationDTO locationDTO) {
+        Location location = Location.builder()
+                .name(locationDTO.getName())
+                .country(locationDTO.getCountry())
+                .city(locationDTO.getCity())
+                .locationCode(locationDTO.getLocationCode())
+                .build();
+
         return locationService.update(id, location);
     }
+
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
